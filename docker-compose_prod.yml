@@ -7,7 +7,7 @@ services:
     volumes:
       - ./nginx/etc/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/etc/conf.d/nginx.prod.conf:/etc/nginx/conf.d/default.conf
-      - muisc_files_volume:/musicplayer/files
+      - music_files_volume:/musicplayer/files
 
     command: ["nginx", "-g", "daemon off;"]
     networks:
@@ -17,5 +17,5 @@ networks:
   music_network:
     external: true
 volumes:
-  muisc_files_volume:
+  music_files_volume:
     external: true
