@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="main-container" *ngIf="initialized">
     <div class="player">
         <i class="bi bi-music-note-list menu"></i>
         <i class="bi bi-cloud-plus add-music" (click)="showAddForm()"></i>
@@ -10,7 +10,9 @@
                 <label>اسم آهنگ</label>
                 <input class="form-control mb-1" [(ngModel)]="musicForAdd.name">
                 <label>لینک</label>
+                <i class="bi bi-upload ms-3" (click)="fileInput.click()"></i>
                 <input class="form-control mb-2" [(ngModel)]="musicForAdd.source">
+                <input #fileInput type="file" class="d-none" (change)="onFileChanged($event)">
                 <button class="btn btn-info" (click)="addMusic()">اضافه کردن</button>
             </div>
         </div>
@@ -22,8 +24,8 @@
             <i class="bi bi-play-circle" (click)="play(audio)"></i>
             <i class="bi bi-arrow-left-circle" (click)="prev(audio)"></i>
         </div>
-        <audio #audio controls class="d-none">
+        <audio #audio (ended)="next(audio)" id="audio" controls class="d-none">
             <source src="{{currentMusic.source}}" type="audio/mp3">
-          </audio>
+        </audio>
     </div>
 </div>

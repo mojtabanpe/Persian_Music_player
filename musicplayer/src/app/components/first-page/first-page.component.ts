@@ -1,4 +1,7 @@
+import { RepositoryService } from './../../services/repository.service';
+import { HelperService } from './../../services/helper.service';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
 
 
 interface Music {
@@ -10,12 +13,18 @@ interface Music {
   templateUrl: './first-page.component.html',
   styleUrls: ['./first-page.component.css']
 })
-export class FirstPageComponent implements OnInit {
+export class FirstPageComponent implements OnInit, AfterViewInit {
   orderedIndexes: Array<number> = [];
   currentIndex = 0;
+  player!: HTMLAudioElement;
   musicForAdd: Music = {
     name: '',
     source: ''
+  };
+  uploadSection = {
+    progressPercent: 0,
+    started: true,
+    finished: false,
   };
   musicList: Array<Music> = [
   {
@@ -27,21 +36,30 @@ export class FirstPageComponent implements OnInit {
     source: 'https://dl.musickhooneh.com/music/1400/2/ghadimi/Moein%20-%20Tanhaye%20tanha.mp3'
   }
   ];
-  currentMusic: Music;
-  player: any;
+  currentMusic!: Music;
   cover = './././assets/img/happy-cat.jpg';
   showError = false;
-  constructor() {
-    this.createOrderedIndexes();
-    this.shuffle();
-    this.currentMusic = this.musicList[this.orderedIndexes[0]];
+  initialized = false;
+  constructor(private helper: HelperService, private repository: RepositoryService) {
   }
 
   ngOnInit() {   
+    this.repository.getMusics().subscribe((res: any) => {
+      this.musicList = res
+      this.createOrderedIndexes();
+      this.shuffle();
+      this.currentMusic = this.musicList[this.orderedIndexes[0]];
+      this.initialized = true;
+    });
+  }
 
+  ngAfterViewInit(): void {
+    this.player = <HTMLAudioElement>(document.getElementById('audio'));
   }
 
   createOrderedIndexes(): void {
+    console.log('oomad');
+    
     this.orderedIndexes = [];
     for (let index = 0; index < this.musicList.length; index++) {
       this.orderedIndexes.push(index);      
@@ -69,6 +87,30 @@ export class FirstPageComponent implements OnInit {
     document.querySelector('.music-cover')?.classList.remove('reduce-opacity');
   }
 
+  onFileChanged(event: any): void {
+    try {
+      const selectedMusic = event.target.files[0];
+      const data = new FormData();
+      data.append('myFile', selectedMusic, selectedMusic.name);
+      
+      this.helper.uploadImage(data).subscribe((res: any) => {
+        if (res !== undefined) {
+          if (res.mode === 'progress') {
+            this.uploadSection.progressPercent = res.percent;
+          } else if (res.mode === 'init') {
+            this.uploadSection.started = true;
+          }
+          else if (res.mode === 'finish') {
+            this.uploadSection.finished = true;
+            this.musicForAdd.source = res.message;
+          }
+        }
+      });
+    } catch (error) {
+    }
+
+    }
+
   addMusic(): void {
     if (this.musicForAdd.name === '' || this.musicForAdd.source === '') {
       this.showError = true;
@@ -78,6 +120,7 @@ export class FirstPageComponent implements OnInit {
       return;
     }
     this.musicList.push(this.musicForAdd);
+    this.repository.addMusic(this.musicForAdd).subscribe();
     this.createOrderedIndexes();
     this.shuffle();
     this.hideAddForm();
