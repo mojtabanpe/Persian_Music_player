@@ -1,0 +1,29 @@
+<div class="main-container">
+    <div class="player">
+        <i class="bi bi-music-note-list menu"></i>
+        <i class="bi bi-cloud-plus add-music" (click)="showAddForm()"></i>
+        <div class="add-music-form d-none">
+            <div class="alert alert-danger" *ngIf="showError===true">
+                فیلدهای خالی رو پر کن!
+            </div>
+            <div class="input-forms">
+                <label>اسم آهنگ</label>
+                <input class="form-control mb-1" [(ngModel)]="musicForAdd.name">
+                <label>لینک</label>
+                <input class="form-control mb-2" [(ngModel)]="musicForAdd.source">
+                <button class="btn btn-info" (click)="addMusic()">اضافه کردن</button>
+            </div>
+        </div>
+        <img [src]="cover" class="music-cover">
+        <p>{{currentMusic.name}}</p>
+        <div class="player-icons">       
+            <i class="bi bi-arrow-right-circle" (click)="next(audio)"></i>
+            <i class="bi bi-pause-circle" (click)="pause(audio)"></i>
+            <i class="bi bi-play-circle" (click)="play(audio)"></i>
+            <i class="bi bi-arrow-left-circle" (click)="prev(audio)"></i>
+        </div>
+        <audio #audio controls class="d-none">
+            <source src="{{currentMusic.source}}" type="audio/mp3">
+          </audio>
+    </div>
+</div>
