@@ -1,7 +1,8 @@
 <div class="main-container" *ngIf="initialized">
     <div class="player">
-        <i class="bi bi-music-note-list menu"></i>
-        <i class="bi bi-cloud-plus add-music" (click)="showAddForm()"></i>
+        <i class="bi bi-music-note-list menu" (click)="showMenu()"></i>
+        <i class="bi bi-cloud-plus add-music" (click)="showAddForm()" *ngIf="!showAddFormBool"></i>
+        <i class="bi bi-x-circle add-music" (click)="hideAddForm()" *ngIf="showAddFormBool"></i>
         <div class="add-music-form d-none">
             <div class="alert alert-danger" *ngIf="showError===true">
                 فیلدهای خالی رو پر کن!
@@ -18,14 +19,24 @@
         </div>
         <img [src]="cover" class="music-cover">
         <p>{{currentMusic.name}}</p>
-        <div class="player-icons">       
-            <i class="bi bi-arrow-right-circle" (click)="next(audio)"></i>
+        <mat-slider (input)='changeCurrentTime($event, audio)'
+        step="10"
+        min="0"
+        [(ngModel)]="audio.currentTime"
+        [max]="audio.duration"
+        aria-label="units"></mat-slider>
+        <div class="player-icons">
+            <i class="bi bi-skip-forward-circle" (click)="next(audio)"></i>
             <i class="bi bi-pause-circle" (click)="pause(audio)"></i>
             <i class="bi bi-play-circle" (click)="play(audio)"></i>
-            <i class="bi bi-arrow-left-circle" (click)="prev(audio)"></i>
+            <i class="bi bi-skip-backward-circle" (click)="prev(audio)"></i>
         </div>
         <audio #audio (ended)="next(audio)" id="audio" controls class="d-none">
             <source src="{{currentMusic.source}}" type="audio/mp3">
         </audio>
+    </div>
+    <div class="menu-container">
+        <i class="bi bi-x-circle close-menu" (click)="hideMenu()"></i>
+        <div class="alert alert-light">بعد ها یه سری کارای قشنگ اینجا میکنیم!</div>
     </div>
 </div>

@@ -25,7 +25,7 @@
 }
 .player-icons {
     position: absolute;
-    bottom: 100px;
+    bottom: 50px;
     font-size: 30px;
     display: flex;
     justify-content: center;
@@ -43,4 +43,12 @@
 
 .reduce-opacity {
     opacity: .3;
+}
+
+mat-slider {
+    width: 300px;
+  }
+
+::ng-deep .mat-slider-track-background {
+    background-color: rgb(171, 226, 226) !important;
 }

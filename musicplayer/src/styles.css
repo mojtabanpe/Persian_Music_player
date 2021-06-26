@@ -24,10 +24,64 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    z-index: 1;
 }
+.menu-container {
+    position: absolute;
+    background-color: rgb(81, 26, 107);
+    width: 320px;
+    height: 500px;
+    border-radius: 20px;
+    display: flex;
+    color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    z-index: 0;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    transform: rotateY(180deg);
+}
+
+.close-menu {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.rotate {
+    transform: rotateY(180deg);
+    animation-name: rotate-animation ;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    z-index: 0;
+}
+.rotate-reverse {
+    transform: rotateY(0deg);
+    animation-name: rotate-reverse-animation ;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    z-index: 1;
+}
+
+@keyframes rotate-animation {
+    from {opacity: 1;}
+    to {opacity: 0;}
+  }
+@keyframes rotate-reverse-animation {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
 .music-cover {
     height: 220px;
     width: 100%;
     margin-bottom: 50px;
     margin-top: 50px;
+}
+
+
+.mat-accent .mat-slider-track-fill, .mat-accent .mat-slider-thumb, .mat-accent .mat-slider-thumb-label {
+    background-color: #521b6b !important;
 }

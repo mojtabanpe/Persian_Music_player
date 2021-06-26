@@ -39,6 +39,7 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
   currentMusic!: Music;
   cover = './././assets/img/happy-cat.jpg';
   showError = false;
+  showAddFormBool = false;
   initialized = false;
   constructor(private helper: HelperService, private repository: RepositoryService) {
   }
@@ -51,6 +52,10 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
       this.currentMusic = this.musicList[this.orderedIndexes[0]];
       this.initialized = true;
     });
+    setInterval(() => {
+      // console.log(this.player.currentTime);
+      
+    }, 100);
   }
 
   ngAfterViewInit(): void {
@@ -78,13 +83,27 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
     this.currentMusic = this.musicList[this.orderedIndexes[0]];
   }
 
+  showMenu(): void {
+    document.querySelector('.player')?.classList.add('rotate');
+    document.querySelector('.menu-container')?.classList.add('rotate-reverse');
+  }
+
+  hideMenu(): void {
+    console.log('oomad close');
+    
+    document.querySelector('.player')?.classList.remove('rotate');
+    document.querySelector('.menu-container')?.classList.remove('rotate-reverse');
+  }
+
   showAddForm(): void {
     document.querySelector('.add-music-form')?.classList.remove('d-none');
     document.querySelector('.music-cover')?.classList.add('reduce-opacity');
+    this.showAddFormBool = true;
   }
   hideAddForm(): void {
     document.querySelector('.add-music-form')?.classList.add('d-none');
     document.querySelector('.music-cover')?.classList.remove('reduce-opacity');
+    this.showAddFormBool = false;
   }
 
   onFileChanged(event: any): void {
@@ -156,6 +175,24 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
     audio.src = this.musicList[this.currentIndex].source;
     audio.play();
   }
+  
+  getAudioDuration(audio: HTMLAudioElement): any {
+
+    console.log(audio.duration);
+    return audio.duration.toFixed(0);
+  }
+  getCurrentTime(audio: HTMLAudioElement): any {
+    console.log(audio.currentTime);
+    
+    return audio.currentTime;
+  }
+
+  changeCurrentTime(event: any, audio: HTMLAudioElement): void {
+    audio.currentTime = event.value;
+    console.log(audio.currentTime);
+    
+  }
+ 
   
 
 }
