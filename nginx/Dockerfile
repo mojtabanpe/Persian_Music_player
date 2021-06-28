@@ -11,7 +11,7 @@ COPY musicplayer ./musicplayer
 RUN cd musicplayer\
     && npm ci \
     && ng build --prod \
-    && cp -r dist/musicplayer/. /usr/share/nginx/html \
+    && cp -r dist/musicplayer/. /usr/share/nginx/html
 
 
 EXPOSE 81
