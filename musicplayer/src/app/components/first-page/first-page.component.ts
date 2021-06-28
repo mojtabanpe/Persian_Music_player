@@ -16,6 +16,7 @@ interface Music {
 export class FirstPageComponent implements OnInit, AfterViewInit {
   orderedIndexes: Array<number> = [];
   currentIndex = 0;
+  disableArrows = false;
   player!: HTMLAudioElement;
   musicForAdd: Music = {
     name: '',
@@ -53,9 +54,7 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
       this.initialized = true;
     });
     setInterval(() => {
-      // console.log(this.player.currentTime);
-      
-    }, 100);
+    }, 120);
   }
 
   ngAfterViewInit(): void {
@@ -88,9 +87,7 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
     document.querySelector('.menu-container')?.classList.add('rotate-reverse');
   }
 
-  hideMenu(): void {
-    console.log('oomad close');
-    
+  hideMenu(): void {    
     document.querySelector('.player')?.classList.remove('rotate');
     document.querySelector('.menu-container')?.classList.remove('rotate-reverse');
   }
@@ -158,15 +155,17 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
   }
 
   next(audio:HTMLAudioElement): void {
+    this.disableArrows = true;
     if (this.currentIndex < this.musicList.length - 1) {
       this.currentIndex++;
     } else { this.currentIndex = 0;}
     this.currentMusic = this.musicList[this.currentIndex];
     audio.currentTime = 0;
     audio.src = this.musicList[this.currentIndex].source; 
-    setTimeout(() => {
-      audio.play();
-    }, 500);
+    const currentAudio =  audio.play();
+    currentAudio.then(res => {
+      this.disableArrows = false;
+    })
     
   }
 
@@ -177,9 +176,10 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
     this.currentMusic = this.musicList[this.currentIndex];
     audio.currentTime = 0;
     audio.src = this.musicList[this.currentIndex].source;
-    setTimeout(() => {
-      audio.play();
-    }, 500);
+    const currentAudio =  audio.play();
+    currentAudio.then(res => {
+      this.disableArrows = false;
+    })
   }
   
   getAudioDuration(audio: HTMLAudioElement): any {

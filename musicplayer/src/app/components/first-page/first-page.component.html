@@ -19,17 +19,17 @@
         </div>
         <img [src]="cover" class="music-cover">
         <p>{{currentMusic.name}}</p>
-        <mat-slider disabled='true' (input)='changeCurrentTime($event, audio)'
+        <mat-slider (input)='changeCurrentTime($event, audio)'
         step="10"
         min="0"
         [(ngModel)]="audio.currentTime"
         [max]="audio.duration"
         aria-label="units"></mat-slider>
         <div class="player-icons">
-            <i class="bi bi-skip-forward-circle" (click)="next(audio)"></i>
+            <i class="bi bi-skip-forward-circle" (click)="next(audio)" *ngIf="!disableArrows"></i>
             <i class="bi bi-pause-circle" (click)="pause(audio)"></i>
             <i class="bi bi-play-circle" (click)="play(audio)"></i>
-            <i class="bi bi-skip-backward-circle" (click)="prev(audio)"></i>
+            <i class="bi bi-skip-backward-circle" (click)="prev(audio)" *ngIf="!disableArrows"></i>
         </div>
         <audio #audio (ended)="next(audio)" id="audio" controls class="d-none">
             <source src="{{currentMusic.source}}" type="audio/mp3">
