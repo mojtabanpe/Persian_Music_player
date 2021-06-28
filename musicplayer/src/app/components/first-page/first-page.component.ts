@@ -164,8 +164,10 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
     this.currentMusic = this.musicList[this.currentIndex];
     audio.currentTime = 0;
     audio.src = this.musicList[this.currentIndex].source; 
- 
-    audio.play();
+    setTimeout(() => {
+      audio.play();
+    }, 500);
+    
   }
 
   prev(audio:HTMLAudioElement): void {
@@ -175,8 +177,9 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
     this.currentMusic = this.musicList[this.currentIndex];
     audio.currentTime = 0;
     audio.src = this.musicList[this.currentIndex].source;
-
-    audio.play();
+    setTimeout(() => {
+      audio.play();
+    }, 500);
   }
   
   getAudioDuration(audio: HTMLAudioElement): any {

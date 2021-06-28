@@ -52,3 +52,6 @@ mat-slider {
 ::ng-deep .mat-slider-track-background {
     background-color: rgb(171, 226, 226) !important;
 }
+::ng-deep .mat-slider-disabled .mat-slider-thumb {
+    transform: none !important;
+}
