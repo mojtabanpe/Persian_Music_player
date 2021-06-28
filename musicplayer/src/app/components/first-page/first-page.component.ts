@@ -161,9 +161,10 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
     if (this.currentIndex < this.musicList.length - 1) {
       this.currentIndex++;
     } else { this.currentIndex = 0;}
-    
-    audio.src = this.musicList[this.currentIndex].source;
     this.currentMusic = this.musicList[this.currentIndex];
+    audio.currentTime = 0;
+    audio.src = this.musicList[this.currentIndex].source; 
+ 
     audio.play();
   }
 
@@ -171,26 +172,22 @@ export class FirstPageComponent implements OnInit, AfterViewInit {
     if (this.currentIndex != 0) {
       this.currentIndex--;
     } else { this.currentIndex = this.musicList.length-1;}
-    
+    this.currentMusic = this.musicList[this.currentIndex];
+    audio.currentTime = 0;
     audio.src = this.musicList[this.currentIndex].source;
+
     audio.play();
   }
   
   getAudioDuration(audio: HTMLAudioElement): any {
-
-    console.log(audio.duration);
     return audio.duration.toFixed(0);
   }
-  getCurrentTime(audio: HTMLAudioElement): any {
-    console.log(audio.currentTime);
-    
+  getCurrentTime(audio: HTMLAudioElement): any {    
     return audio.currentTime;
   }
 
   changeCurrentTime(event: any, audio: HTMLAudioElement): void {
     audio.currentTime = event.value;
-    console.log(audio.currentTime);
-    
   }
  
   
