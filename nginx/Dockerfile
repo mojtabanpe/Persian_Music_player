@@ -10,10 +10,8 @@ COPY musicplayer ./musicplayer
 
 RUN cd musicplayer\
     && npm ci \
-    && ng build --prod --base-href /musicplayer/  \
-    && mkdir /usr/share/nginx/html/musicplayer \
-    && cp -r dist/musicplayer/. /usr/share/nginx/html/musicplayer \
-    && cd ..
+    && ng build --prod \
+    && cp -r dist/musicplayer/. /usr/share/nginx/html \
 
 
 EXPOSE 81
